@@ -1,4 +1,6 @@
-import { List, ListItem, ListItemText } from '@mui/material';
+import React from 'react';
+import { List, ListItem, ListItemText, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Preset {
   id: number;
@@ -10,11 +12,16 @@ interface Preset {
   };
 }
 
+interface Business {
+  name: string;
+  website: string;
+}
+
 interface Props {
   onLoad: (preset: Preset) => void;
 }
 
-export default function PresetList({ onLoad }: Props) {
+const PresetList: React.FC<Props> = ({ onLoad }) => {
   const presets = JSON.parse(localStorage.getItem('presets') || '[]');
 
   const handleDelete = (id: number) => {
@@ -55,4 +62,6 @@ export default function PresetList({ onLoad }: Props) {
       ))}
     </List>
   );
-}
+};
+
+export default PresetList;

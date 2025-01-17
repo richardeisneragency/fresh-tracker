@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box, ButtonGroup, Button } from '@mui/material';
 
 interface Props {
@@ -6,7 +7,7 @@ interface Props {
   onDateChange: (start: string, end: string) => void;
 }
 
-export default function DateRangeSelector({ startDate, endDate, onDateChange }: Props) {
+const DateRangeSelector: React.FC<Props> = ({ startDate, endDate, onDateChange }) => {
   const handlePeriodSelect = (days: number) => {
     const end = new Date();
     const start = new Date();
@@ -42,4 +43,6 @@ export default function DateRangeSelector({ startDate, endDate, onDateChange }: 
       </ButtonGroup>
     </Box>
   );
-}
+};
+
+export default DateRangeSelector;

@@ -121,6 +121,22 @@ export async function getSearchConsoleData(
   }
 }
 
+export const fetchSearchData = async (
+  startDate: string,
+  endDate: string,
+  website: string,
+  keywords: string[]
+): Promise<ProcessedKeywordData[]> => {
+  // Mock data for now
+  return keywords.map(keyword => ({
+    keyword,
+    clicks: Math.floor(Math.random() * 100),
+    impressions: Math.floor(Math.random() * 1000),
+    ctr: Math.random(),
+    position: Math.random() * 10
+  }));
+};
+
 function normalizeUrl(url: string): string {
   // Remove protocol
   let normalized = url.replace(/^https?:\/\//, '');
