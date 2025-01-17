@@ -1,6 +1,4 @@
-import { Box, List, ListItem, ListItemText, IconButton, Typography, Paper } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Business } from '../types';
+import { List, ListItem, ListItemText } from '@mui/material';
 
 interface Preset {
   id: number;
@@ -31,35 +29,30 @@ export default function PresetList({ onLoad }: Props) {
   }
 
   return (
-    <Paper elevation={3} sx={{ p: 3, mt: 3 }}>
-      <Typography variant="h6" gutterBottom>
-        Saved Presets
-      </Typography>
-      <List>
-        {presets.map((preset: Preset) => (
-          <ListItem
-            key={preset.id}
-            secondaryAction={
-              <IconButton edge="end" onClick={() => handleDelete(preset.id)}>
-                <DeleteIcon />
-              </IconButton>
-            }
-            sx={{ 
-              border: '1px solid',
-              borderColor: 'divider',
-              borderRadius: 1,
-              mb: 1
-            }}
-          >
-            <ListItemText
-              primary={preset.business.name || preset.business.website}
-              secondary={`${preset.keywords.length} keywords`}
-              onClick={() => onLoad(preset)}
-              sx={{ cursor: 'pointer' }}
-            />
-          </ListItem>
-        ))}
-      </List>
-    </Paper>
+    <List>
+      {presets.map((preset: Preset) => (
+        <ListItem
+          key={preset.id}
+          secondaryAction={
+            <IconButton edge="end" onClick={() => handleDelete(preset.id)}>
+              <DeleteIcon />
+            </IconButton>
+          }
+          sx={{ 
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 1,
+            mb: 1
+          }}
+        >
+          <ListItemText
+            primary={preset.business.name || preset.business.website}
+            secondary={`${preset.keywords.length} keywords`}
+            onClick={() => onLoad(preset)}
+            sx={{ cursor: 'pointer' }}
+          />
+        </ListItem>
+      ))}
+    </List>
   );
 }

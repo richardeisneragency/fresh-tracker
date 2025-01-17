@@ -1,43 +1,54 @@
-import { Box, Typography, CircularProgress } from '@mui/material';
-import { useState, useEffect } from 'react';
+import React from 'react';
 import KeywordList from './KeywordList';
-import { SearchState } from '../types';
+import { KeywordData, ProcessedKeywordData } from '../types';
 
 interface Props {
-  searchState: SearchState;
+  keywords: KeywordData[];
+  data: ProcessedKeywordData[];
   loading: boolean;
+  onDelete: (keyword: string) => void;
 }
 
-export default function KeywordTracker({ searchState, loading }: Props) {
+const KeywordTracker: React.FC<Props> = ({ keywords, data, loading, onDelete }) => {
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-        <CircularProgress />
-      </Box>
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '24px' }}>
+          <div role="status">
+            <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-gray-200" />
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
     );
   }
 
-  if (!searchState.data || !searchState.data.keywordData || searchState.data.keywordData.length === 0) {
-    if (!loading && searchState.isAuthenticated) {
+  if (!data || data.length === 0) {
+    if (!loading) {
       return (
-        <Typography variant="body1" sx={{ textAlign: 'center', p: 3 }}>
-          No results found for the selected keywords and date range.
-        </Typography>
+        <div>
+          <p style={{ textAlign: 'center', padding: '24px' }}>
+            No results found for the selected keywords and date range.
+          </p>
+        </div>
       );
     }
     return null;
   }
 
   return (
-    <Box sx={{ mt: 3 }}>
-      <Typography variant="h6" gutterBottom>
+    <div style={{ marginTop: '24px' }}>
+      <h6 style={{ marginBottom: '16px' }}>
         Search Results
-      </Typography>
-      <KeywordList
-        keywords={searchState.keywords}
-        data={searchState.data.keywordData}
-        loading={loading}
+      </h6>
+      <KeywordList 
+        keywords={keywords} 
+        data={data} 
+        loading={loading} 
+        onDelete={onDelete}
       />
-    </Box>
+    </div>
   );
-}
+};
+
+export default KeywordTracker;

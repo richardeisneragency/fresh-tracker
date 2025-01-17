@@ -15,8 +15,10 @@ export default function GoogleLogin({ onLoginSuccess }: Props) {
     setLoading(true);
     setError(null);
     try {
-      const { token } = await googleAuth.signIn();
-      onLoginSuccess(token);
+      const token = await googleAuth.signIn();
+      if (token) {
+        onLoginSuccess(token);
+      }
     } catch (err) {
       setError('Failed to sign in with Google. Please try again.');
       console.error('Google sign-in error:', err);

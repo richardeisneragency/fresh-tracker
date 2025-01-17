@@ -1,5 +1,4 @@
-import { Box, Button, Typography, CircularProgress } from '@mui/material';
-import { Business } from '../types';
+import { Button } from '@mui/material';
 
 interface Props {
   onCheckNow: () => void;
@@ -10,15 +9,14 @@ interface Props {
 
 export default function PresetActions({ onCheckNow, onSavePreset, disabled, loading }: Props) {
   return (
-    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mt: 2 }}>
+    <div>
       <Button
         variant="contained"
         color="primary"
         onClick={onCheckNow}
         disabled={disabled}
-        startIcon={loading && <CircularProgress size={20} color="inherit" />}
       >
-        {loading ? 'Checking...' : 'Check Now'}
+        Check Now
       </Button>
       
       <Button
@@ -31,10 +29,10 @@ export default function PresetActions({ onCheckNow, onSavePreset, disabled, load
       </Button>
       
       {disabled && !loading && (
-        <Typography variant="caption" color="text.secondary">
+        <div>
           Enter a valid website URL to enable these actions
-        </Typography>
+        </div>
       )}
-    </Box>
+    </div>
   );
 }
