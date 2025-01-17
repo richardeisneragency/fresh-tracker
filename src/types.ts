@@ -29,6 +29,27 @@ export interface ProcessedKeywordData {
   dailyData: DailyData[];
 }
 
+export interface Client {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export interface DailyDataValue {
+  date: string;
+  value: number;
+}
+
+export interface SearchData {
+  keyword: string;
+  volume: number;
+  difficulty: number;
+  cpc: number;
+  competition: number;
+  results: number;
+  trend: DailyDataValue[];
+}
+
 export interface SearchState {
   business: Business;
   keywords: KeywordData[];

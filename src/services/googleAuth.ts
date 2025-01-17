@@ -63,16 +63,21 @@ class GoogleAuth {
     return this.scriptLoadPromise;
   }
 
-  async signIn(): Promise<string> {
+  async signIn(): Promise<string | null> {
     try {
       await this.loadGoogleScript();
 
-      if (!window.google?.accounts?.oauth2) {
+      if (!window.google) {
+        console.error('Google API not loaded');
+        return null;
+      }
+      const auth = window.google.accounts.oauth2;
+      if (!auth) {
         throw new Error('Google Identity Services not loaded');
       }
 
       return new Promise((resolve, reject) => {
-        const client = window.google.accounts.oauth2.initTokenClient({
+        const client = auth.initTokenClient({
           client_id: GOOGLE_CLIENT_ID,
           scope: SCOPES.join(' '),
           callback: (response: any) => {
