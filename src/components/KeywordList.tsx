@@ -17,7 +17,7 @@ import {
 
 interface Props {
   keywords: KeywordData[];
-  onDelete: (id: string) => void;
+  onDelete: (keyword: string) => void;
   data?: Array<{
     keyword: string;
     clicks: number;
@@ -36,12 +36,12 @@ interface Props {
 export default function KeywordList({ keywords, onDelete, data, loading }: Props) {
   const [expandedKeywords, setExpandedKeywords] = useState<Set<string>>(new Set());
 
-  const toggleExpand = (keywordId: string) => {
+  const toggleExpand = (keyword: string) => {
     const newExpanded = new Set(expandedKeywords);
-    if (newExpanded.has(keywordId)) {
-      newExpanded.delete(keywordId);
+    if (newExpanded.has(keyword)) {
+      newExpanded.delete(keyword);
     } else {
-      newExpanded.add(keywordId);
+      newExpanded.add(keyword);
     }
     setExpandedKeywords(newExpanded);
   };
@@ -61,7 +61,7 @@ export default function KeywordList({ keywords, onDelete, data, loading }: Props
         
         return (
           <Paper
-            key={item.id}
+            key={item.keyword}
             elevation={1}
             sx={{ mb: 2 }}
           >
@@ -105,10 +105,10 @@ export default function KeywordList({ keywords, onDelete, data, loading }: Props
                     </Typography>
                     {keywordData.dailyData && keywordData.dailyData.length > 0 && (
                       <IconButton
-                        onClick={() => toggleExpand(item.id)}
+                        onClick={() => toggleExpand(item.keyword)}
                         size="small"
                       >
-                        {expandedKeywords.has(item.id) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        {expandedKeywords.has(item.keyword) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                       </IconButton>
                     )}
                   </Box>
@@ -117,7 +117,7 @@ export default function KeywordList({ keywords, onDelete, data, loading }: Props
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={() => onDelete(item.id)}
+                  onClick={() => onDelete(item.keyword)}
                   size="small"
                 >
                   <DeleteIcon />
@@ -125,7 +125,7 @@ export default function KeywordList({ keywords, onDelete, data, loading }: Props
               </Box>
 
               {keywordData?.dailyData && keywordData.dailyData.length > 0 && (
-                <Collapse in={expandedKeywords.has(item.id)}>
+                <Collapse in={expandedKeywords.has(item.keyword)}>
                   <Box sx={{ mt: 3, p: 2 }}>
                     <Typography variant="subtitle2" gutterBottom>
                       Performance Trend
