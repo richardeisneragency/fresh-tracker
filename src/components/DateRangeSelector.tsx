@@ -1,46 +1,48 @@
 import React from 'react';
-import { Box, ButtonGroup, Button } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 
 interface Props {
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
   onDateChange: (start: string, end: string) => void;
 }
 
-const DateRangeSelector: React.FC<Props> = ({ startDate, endDate, onDateChange }) => {
-  const handlePeriodSelect = (days: number) => {
-    const end = new Date();
-    const start = new Date();
-    start.setDate(end.getDate() - days);
-    
-    onDateChange(
-      start.toISOString().split('T')[0],
-      end.toISOString().split('T')[0]
-    );
+const DateRangeSelector: React.FC<Props> = ({ startDate: initialStartDate, endDate: initialEndDate, onDateChange }) => {
+  const [startDate, setStartDate] = React.useState(
+    initialStartDate || new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+  );
+  const [endDate, setEndDate] = React.useState(
+    initialEndDate || new Date().toISOString().split('T')[0]
+  );
+
+  const handleStartDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newStartDate = event.target.value;
+    setStartDate(newStartDate);
+    onDateChange(newStartDate, endDate);
+  };
+
+  const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newEndDate = event.target.value;
+    setEndDate(newEndDate);
+    onDateChange(startDate, newEndDate);
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-      <ButtonGroup variant="outlined" size="medium">
-        <Button 
-          onClick={() => handlePeriodSelect(7)}
-          variant={startDate === new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] ? 'contained' : 'outlined'}
-        >
-          Last 7 Days
-        </Button>
-        <Button 
-          onClick={() => handlePeriodSelect(30)}
-          variant={startDate === new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] ? 'contained' : 'outlined'}
-        >
-          Last 30 Days
-        </Button>
-        <Button 
-          onClick={() => handlePeriodSelect(90)}
-          variant={startDate === new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] ? 'contained' : 'outlined'}
-        >
-          Last 90 Days
-        </Button>
-      </ButtonGroup>
+    <Box sx={{ display: 'flex', gap: 2 }}>
+      <TextField
+        type="date"
+        label="Start Date"
+        value={startDate}
+        onChange={handleStartDateChange}
+        InputLabelProps={{ shrink: true }}
+      />
+      <TextField
+        type="date"
+        label="End Date"
+        value={endDate}
+        onChange={handleEndDateChange}
+        InputLabelProps={{ shrink: true }}
+      />
     </Box>
   );
 };

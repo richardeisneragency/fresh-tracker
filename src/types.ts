@@ -4,20 +4,16 @@ export interface Business {
   location: string;
 }
 
-export interface DateRange {
-  start: string;
-  end: string;
-}
-
 export interface KeywordData {
-  id: string;
   keyword: string;
+  isActive: boolean;
 }
 
 export interface DailyData {
   date: string;
   clicks: number;
   impressions: number;
+  ctr: number;
   position: number;
 }
 
@@ -25,6 +21,8 @@ export interface ProcessedKeywordData {
   keyword: string;
   clicks: number;
   impressions: number;
+  ctr: number;
+  position: number;
   avgPosition: number;
   dailyData: DailyData[];
 }
@@ -53,9 +51,8 @@ export interface SearchData {
 export interface SearchState {
   business: Business;
   keywords: KeywordData[];
-  dateRange: DateRange;
-  isAuthenticated: boolean;
   data: {
-    keywordData?: ProcessedKeywordData[];
+    keywordData: ProcessedKeywordData[];
   } | null;
+  isAuthenticated: boolean;
 }

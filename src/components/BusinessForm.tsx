@@ -1,17 +1,14 @@
 import { Box, TextField, Typography, Button } from '@mui/material';
 import React from 'react';
+import { Business } from '../types';
 
 interface Props {
-  initialBusiness?: {
-    name: string;
-    website: string;
-    location: string;
-  };
-  onSubmit: (business: { name: string; website: string; location: string }) => void;
+  initialBusiness?: Business;
+  onSubmit: (business: Business) => void;
 }
 
 const BusinessForm: React.FC<Props> = ({ initialBusiness, onSubmit }) => {
-  const [business, setBusiness] = React.useState({
+  const [business, setBusiness] = React.useState<Business>({
     name: '',
     website: '',
     location: ''
@@ -30,7 +27,7 @@ const BusinessForm: React.FC<Props> = ({ initialBusiness, onSubmit }) => {
     }
   }, [business, onSubmit]);
 
-  const handleChange = (field: keyof typeof business) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (field: keyof Business) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setBusiness(prev => ({
       ...prev,
       [field]: event.target.value

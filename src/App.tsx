@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container, Paper, Box } from '@mui/material';
 import PlatformLogin from './components/PlatformLogin';
 import BusinessForm from './components/BusinessForm';
 import KeywordTracker from './components/KeywordTracker';
 import DateRangeSelector from './components/DateRangeSelector';
 import AddKeyword from './components/AddKeyword';
-import { SearchState } from './types';
-import { googleAuth } from './services/googleAuth';
+import { Business, SearchState } from './types';
 import { fetchSearchData } from './services/searchData';
 
 function App() {
@@ -42,11 +41,27 @@ function App() {
     }));
   };
 
-  const handleDateChange = (startDate: Date | null, endDate: Date | null) => {
-    // Handle date changes
+  const handleDateChange = async (start: string, end: string) => {
+    setLoading(true);
+    try {
+      const data = await fetchSearchData(
+        start,
+        end,
+        searchState.business.website,
+        searchState.keywords.map(k => k.keyword)
+      );
+      setSearchState(prev => ({
+        ...prev,
+        data: { keywordData: data }
+      }));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleBusinessUpdate = (business: { name: string; website: string; location: string }) => {
+  const handleBusinessUpdate = (business: Business) => {
     setSearchState(prev => ({
       ...prev,
       business
@@ -74,7 +89,7 @@ function App() {
             onUpdate={handleBusinessUpdate}
           />
           <AddKeyword onAdd={handleAddKeyword} />
-          <DateRangeSelector onChange={handleDateChange} />
+          <DateRangeSelector onDateChange={handleDateChange} />
           <KeywordTracker 
             keywords={searchState.keywords}
             data={searchState.data?.keywordData || []}
